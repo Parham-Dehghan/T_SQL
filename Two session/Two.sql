@@ -60,3 +60,15 @@ SELECT * FROM Products;
 
 -- مشاهده سفارشات
 SELECT * FROM Orders;
+
+--افزودن ستون جدید به جدول Users
+ALTER TABLE Users
+ADD phone NVARCHAR(15);
+
+--تغییر نوع داده یک ستون
+ALTER TABLE Products
+ALTER COLUMN ProductName NVARCHAR(150);
+
+--حذف ستون 
+ALTER TABLE Users
+DROP COLUMN Phone;
