@@ -102,3 +102,8 @@ WHERE UserID = 2;
 -- انتخاب داده با فیلتر ساده
 SELECT * FROM Products
 WHERE Price > 100;
+
+--پایان
+use master
+go
+DROP DATABASE IF EXISTS test2;
