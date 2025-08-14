@@ -89,3 +89,16 @@ ADD CONSTRAINT UQ_Email UNIQUE (Email);
 --افزودن FOREIGN KEY
 ALTER TABLE Orders
 ADD CONSTRAINT FK_Orders_Users FOREIGN KEY(UserID)REFERENCES Users(UserID);
+
+-- بروزرسانی داده
+UPDATE Products
+SET Price = Price * 1.1
+WHERE ProductName = 'Laptop';
+
+-- حذف داده
+DELETE FROM Users
+WHERE UserID = 2;
+
+-- انتخاب داده با فیلتر ساده
+SELECT * FROM Products
+WHERE Price > 100;
