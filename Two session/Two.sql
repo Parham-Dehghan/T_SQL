@@ -72,3 +72,11 @@ ALTER COLUMN ProductName NVARCHAR(150);
 --حذف ستون 
 ALTER TABLE Users
 DROP COLUMN Phone;
+
+--حذف جدول
+DROP TABLE IF EXISTS Orders;
+
+--تغییر نام جدول
+EXEC sp_rename 'Products' , 'Items'; 
+SELECT * FROM Items;
+EXEC sp_rename 'Items' , 'Products';
