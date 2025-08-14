@@ -80,3 +80,12 @@ DROP TABLE IF EXISTS Orders;
 EXEC sp_rename 'Products' , 'Items'; 
 SELECT * FROM Items;
 EXEC sp_rename 'Items' , 'Products';
+
+
+--افزودن UNIQUE constraint به ستون
+ALTER TABLE Users
+ADD CONSTRAINT UQ_Email UNIQUE (Email);
+
+--افزودن FOREIGN KEY
+ALTER TABLE Orders
+ADD CONSTRAINT FK_Orders_Users FOREIGN KEY(UserID)REFERENCES Users(UserID);
