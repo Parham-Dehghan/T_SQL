@@ -51,3 +51,12 @@ INSERT INTO Orders (UserID, ProductID, Quantity)
 VALUES
 (1, 1, 1),  -- Parham سفارش لپ‌تاپ
 (2, 2, 2);  -- Ali سفارش موس
+
+--مشاهده کاربران
+SELECT * FROM Users;
+
+--مشاهده محصولات 
+SELECT * FROM Products;
+
+-- مشاهده سفارشات
+SELECT * FROM Orders;
