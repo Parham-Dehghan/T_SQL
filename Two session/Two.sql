@@ -35,3 +35,19 @@ CREATE TABLE Orders(
 	FOREIGN KEY (ProductID) REFERENCES Products(ProductsID)
 );
 
+INSERT INTO Users (FirstName, LastName, Email)
+VALUES
+('Parham', 'Dehghan', 'parham@example.com'),
+('Ali', 'Rezaei', 'ali@example.com');
+
+-- افزودن محصولات
+INSERT INTO Products (ProductName, Price, Stock)
+VALUES
+('Laptop', 1500.00, 10),
+('Mouse', 25.50, 50);
+
+-- ثبت سفارش
+INSERT INTO Orders (UserID, ProductID, Quantity)
+VALUES
+(1, 1, 1),  -- Parham سفارش لپ‌تاپ
+(2, 2, 2);  -- Ali سفارش موس
