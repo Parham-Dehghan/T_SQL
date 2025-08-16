@@ -54,5 +54,8 @@ VALUES
 (1, 1, 1),  -- Parham سفارش لپ‌تاپ
 (2, 2, 2);  -- Ali سفارش موس
 
---نمایش ستون انتخاب شده
+--نمایش جدول انتخاب شده
 SELECT * FROM Users
+
+--نمایش ستون های انتخاب شده از جدول
+SELECT FirstName, Lastname FROM Users;
