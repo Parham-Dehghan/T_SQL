@@ -77,3 +77,17 @@ ORDER BY Price ASC;
 -- تمام ستون‌ها را از Users انتخاب می کند و نتایج را بر اساس DataCreated به ترتیب نزولی مرتب می کند.
 SELECT * FROM Users
 ORDER BY DataCreated DESC;
+
+
+--تعداد رکورد ها در جدول user نشون میده
+SELECT COUNT(*) AS TotalUsers FROM Users;
+
+
+--جمع تعداد سفارشات  از جدول محصولات نشان میدهد
+SELECT SUM(Quantity) AS TotalQuantity FROM Orders;
+
+--کمترین قیمت و بیشترین قیمت و میانگین قیمت رو از ستون قیمت در جدول محصولات  میگیره
+SELECT MIN(Price) AS MinPrice,
+       MAX(Price) AS MaxPrice,
+	   AVG(Price) AS AvgPrice
+FROM Products;
