@@ -64,3 +64,7 @@ SELECT FirstName, Lastname FROM Users;
 -- تمام ستون‌های محصولاتی که قیمت آنها بیشتر از ۱۰۰۰ هست را نمایش می دهد
 SELECT * FROM Products
 WHERE Price > 1000;
+
+-- تمام ستون‌های Users که نام کوچک آنها «پرهام» است را انتخاب می کنیم
+SELECT * FROM Users
+WHERE FirstName = 'Parham';
