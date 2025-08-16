@@ -192,3 +192,7 @@ RIGHT JOIN Orders o
 --انتخاب 3 محصول با بالاترین قیمت به ترتیب نزولی
 SELECT TOP 3 * FROM Products
 ORDER BY Price DESC;
+
+--نمایش نام محصول بصورت یکتا
+SELECT DISTINCT ProductName FROM
+Products;
