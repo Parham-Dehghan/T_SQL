@@ -104,3 +104,11 @@ TotalQuantity
 FROM Orders
 GROUP BY UserID
 HAVING SUM(Quantity) > 1;
+
+--نمایش اسم افرادی که با A شروع میشه
+SELECT * FROM Users
+WHERE FirstName LIKE 'A%';
+
+--نمایش نام محصولاتی که داخلش top هستش
+SELECT * FROM Products
+WHERE ProductName LIKE '%top%';
