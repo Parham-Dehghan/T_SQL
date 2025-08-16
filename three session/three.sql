@@ -98,7 +98,7 @@ OrderCount
 FROM Orders
 GROUP BY UserID;
 
--- جمع تعداد خرید ها و جمع تعداد ایدی ها بیش از یک خرید داشتن
+--- جمع تعداد خرید ها و جمع تعداد ایدی ها بیش از یک خرید داشتن
 SELECT UserID , SUM(Quantity) AS
 TotalQuantity
 FROM Orders
