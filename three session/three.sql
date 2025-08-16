@@ -112,3 +112,8 @@ WHERE FirstName LIKE 'A%';
 --نمایش نام محصولاتی که داخلش top هستش
 SELECT * FROM Products
 WHERE ProductName LIKE '%top%';
+
+--مقادیر تکراری در دوتا جدول حذف می کند و نمایش میدهد
+SELECT FirstName AS Name FROM Users 
+UNION 
+SELECT ProductName AS Name FROM Products;
