@@ -168,4 +168,23 @@ WHERE ProductsID IN(
 	HAVING COUNT(*) > 1
 );
 
+-- این کوئری تمام کاربران را که حداقل یک سفارش دارند همراه با اطلاعات سفارششان نمایش می‌دهد.
+SELECT u.UserID, u.FirstName, u.LastName, o.OrderID, o.ProductID, o.Quantity
+FROM Users u
+INNER JOIN Orders o
+    ON u.UserID = o.UserID;
+
+-- این کوئری تمام کاربران را نمایش می‌دهد، حتی اگر سفارشی ثبت نکرده باشند.
+-- ستون‌های سفارش (OrderID, ProductID, Quantity) در صورتی که سفارشی نباشد، NULL خواهند بود.
+SELECT u.UserID, u.FirstName, u.LastName, o.OrderID, o.ProductID, o.Quantity
+FROM Users u
+LEFT JOIN Orders o
+    ON u.UserID = o.UserID;
+
+-- این کوئری تمام سفارشات را نمایش می‌دهد، حتی اگر کاربر مربوطه وجود نداشته باشد.
+-- ستون‌های کاربر (UserID, FirstName, LastName) در صورتی که کاربر موجود نباشد، NULL خواهند بود.
+SELECT u.UserID, u.FirstName, u.LastName, o.OrderID, o.ProductID, o.Quantity
+FROM Users u
+RIGHT JOIN Orders o
+    ON u.UserID = o.UserID;
 
