@@ -91,3 +91,16 @@ SELECT MIN(Price) AS MinPrice,
        MAX(Price) AS MaxPrice,
 	   AVG(Price) AS AvgPrice
 FROM Products;
+
+-- نشان میدهد که هر ایدی چه مقداری خرید داشته است
+SELECT UserID , COUNT(*) AS
+OrderCount
+FROM Orders
+GROUP BY UserID;
+
+-- جمع تعداد خرید ها و جمع تعداد ایدی ها بیش از یک خرید داشتن
+SELECT UserID , SUM(Quantity) AS
+TotalQuantity
+FROM Orders
+GROUP BY UserID
+HAVING SUM(Quantity) > 1;
