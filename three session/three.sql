@@ -68,3 +68,12 @@ WHERE Price > 1000;
 -- تمام ستون‌های Users که نام کوچک آنها «پرهام» است را انتخاب می کنیم
 SELECT * FROM Users
 WHERE FirstName = 'Parham';
+
+
+---- تمام ستون‌های محصولات را انتخاب می کند و نتایج را بر اساس قیمت به صورت صعودی مرتب می کند
+SELECT * FROM Products
+ORDER BY Price ASC;
+
+-- تمام ستون‌ها را از Users انتخاب می کند و نتایج را بر اساس DataCreated به ترتیب نزولی مرتب می کند.
+SELECT * FROM Users
+ORDER BY DataCreated DESC;
