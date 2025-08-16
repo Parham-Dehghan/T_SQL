@@ -59,3 +59,8 @@ SELECT * FROM Users
 
 --نمایش ستون های انتخاب شده از جدول
 SELECT FirstName, Lastname FROM Users;
+
+
+-- تمام ستون‌های محصولاتی که قیمت آنها بیشتر از ۱۰۰۰ هست را نمایش می دهد
+SELECT * FROM Products
+WHERE Price > 1000;
