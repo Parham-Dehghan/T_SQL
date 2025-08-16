@@ -188,3 +188,7 @@ FROM Users u
 RIGHT JOIN Orders o
     ON u.UserID = o.UserID;
 
+
+--انتخاب 3 محصول با بالاترین قیمت به ترتیب نزولی
+SELECT TOP 3 * FROM Products
+ORDER BY Price DESC;
