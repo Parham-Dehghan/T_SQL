@@ -196,3 +196,9 @@ ORDER BY Price DESC;
 --نمایش نام محصول بصورت یکتا
 SELECT DISTINCT ProductName FROM
 Products;
+
+
+--پایان
+use master
+go
+DROP DATABASE IF EXISTS test3;
