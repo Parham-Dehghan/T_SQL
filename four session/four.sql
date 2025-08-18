@@ -96,3 +96,11 @@ WHERE ProductName = 'laptop';
 UPDATE Users
 SET Email = 'new.md@gmail.con'
 WHERE UserID = 3;
+
+
+--حذف  کاربر با ایدی 5و چون ایدی  ی کلید خارجیه داره ما باید  سفارش اون کاربر رو حذف کنیم
+DELETE FROM Users
+WHERE UserID = 5;
+
+DELETE FROM Orders
+WHERE UserID = 5;
