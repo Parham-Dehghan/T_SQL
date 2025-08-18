@@ -87,6 +87,7 @@ VALUES
 (9, 5, 1),
 (10, 6, 1);
 
+
 --تغییر قیمت محصول
 UPDATE Products
 SET Price = Price * 1.10
@@ -112,3 +113,4 @@ WHERE Quantity < 1;
 
 --حذف همه داده ها بدون حذف جدول 
 TRUNCATE TABLE Orders;
+--توصیه می کنم دستور بالا رو استفاده نکنید
