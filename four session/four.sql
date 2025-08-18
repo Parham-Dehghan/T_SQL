@@ -130,4 +130,7 @@ DROP COLUMN Address;
 
 
 --حذف جدول 
-DROP TABLE Orders
+DROP TABLE Orders;
+
+--حذف دیتابیس 
+DROP DATABASE test4;
