@@ -119,3 +119,7 @@ TRUNCATE TABLE Orders;
 --افزودن ستون جدید
 ALTER TABLE Users
 ADD Address NVARCHAR(200);
+
+--تغییر نوع داده ستون 
+ALTER TABLE Products
+ALTER COLUMN Price DECIMAL(12,2);
