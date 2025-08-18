@@ -104,3 +104,8 @@ WHERE UserID = 5;
 
 DELETE FROM Orders
 WHERE UserID = 5;
+
+
+--حذف سفارشاتی  با تعداد کمتر از 1 دارند
+DELETE FROM Orders
+WHERE Quantity < 1;
