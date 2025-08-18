@@ -91,3 +91,8 @@ VALUES
 UPDATE Products
 SET Price = Price * 1.10
 WHERE ProductName = 'laptop';
+
+--تغییر ایمیل کاربر
+UPDATE Users
+SET Email = 'new.md@gmail.con'
+WHERE UserID = 3;
