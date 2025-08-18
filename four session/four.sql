@@ -114,3 +114,8 @@ WHERE Quantity < 1;
 --حذف همه داده ها بدون حذف جدول 
 TRUNCATE TABLE Orders;
 --توصیه می کنم دستور بالا رو استفاده نکنید
+
+
+--افزودن ستون جدید
+ALTER TABLE Users
+ADD Address NVARCHAR(200);
