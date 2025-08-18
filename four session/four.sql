@@ -127,3 +127,7 @@ ALTER COLUMN Price DECIMAL(12,2);
 --حذف ستون 
 ALTER TABLE Users
 DROP COLUMN Address;
+
+
+--حذف جدول 
+DROP TABLE Orders
