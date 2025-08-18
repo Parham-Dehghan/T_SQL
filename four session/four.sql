@@ -123,3 +123,7 @@ ADD Address NVARCHAR(200);
 --تغییر نوع داده ستون 
 ALTER TABLE Products
 ALTER COLUMN Price DECIMAL(12,2);
+
+--حذف ستون 
+ALTER TABLE Users
+DROP COLUMN Address;
