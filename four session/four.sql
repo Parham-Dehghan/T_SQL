@@ -109,3 +109,6 @@ WHERE UserID = 5;
 --حذف سفارشاتی  با تعداد کمتر از 1 دارند
 DELETE FROM Orders
 WHERE Quantity < 1;
+
+--حذف همه داده ها بدون حذف جدول 
+TRUNCATE TABLE Orders;
