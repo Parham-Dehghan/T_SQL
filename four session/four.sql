@@ -134,3 +134,12 @@ DROP TABLE Orders;
 
 --حذف دیتابیس 
 DROP DATABASE test4;
+
+
+
+
+
+--پایان
+use master
+go
+DROP DATABASE IF EXISTS test4;
