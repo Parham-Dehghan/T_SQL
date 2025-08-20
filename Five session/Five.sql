@@ -133,3 +133,12 @@ SELECT DATEADD(DAY, 7, GETDATE()) AS NextWeek;
 
 --تفاوت بین دو تاریخ
 SELECT DATEDIFF(DAY, '2025-08-01' , '2025-08-17') AS DaysDiff;
+
+-- تبدیل رشته به عدد
+SELECT CAST('123' AS INT) AS NumberValue;
+
+--تبدیل عدد به رشته
+SELECT CAST(123 AS NVARCHAR(10)) AS TextValue;
+
+--تبدیل با قابلیت دقیق تر
+SELECT CONVERT(VARCHAR(10), GETDATE(), 23) AS DataString; --yyyy-mm-dd
