@@ -156,4 +156,11 @@ SELECT RAND() AS RandomValue;
 SELECT POWER(5 , 2) AS SquareValue;
 
 --ریشه دوم عدد
-SELECT SQRT(25) AS SquareRootValue
+SELECT SQRT(25) AS SquareRootValue;
+
+
+
+--پایان
+use master
+go
+DROP DATABASE IF EXISTS test5;
