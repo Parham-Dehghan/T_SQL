@@ -86,3 +86,8 @@ VALUES
 (8, 4, 2),
 (9, 5, 1),
 (10, 6, 1);
+
+
+--گرد کردن عدد صحیح
+SELECT ROUND (123.456 , 0) AS
+RoundedNumber;
