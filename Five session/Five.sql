@@ -91,3 +91,12 @@ VALUES
 --گرد کردن عدد صحیح
 SELECT ROUND (123.456 , 0) AS
 RoundedNumber;
+
+-- بزرگترین عدد بین 10 و 20
+SELECT (CASE WHEN 10 > 20 THEN 10 ELSE 20 END) AS MaxValue;
+
+-- کوچیکترین عدد بین 10 و 20
+SELECT (CASE WHEN 10 < 20 THEN 10 ELSE 20 END) AS MinValue;
+
+-- مقدار مطلق
+SELECT ABS(-50) AS AbsoluteValue;
