@@ -118,3 +118,18 @@ SELECT SUBSTRING(ProductName, 1, 5) AS ShortName FROM Products;
 
 -- جایگزینی متن
 SELECT REPLACE(ProductName, 'Laptop' , 'Notebook') AS NewProductName FROM Products;
+
+-- تاریخ و زمان فعلی
+SELECT GETDATE() AS CurrentDateTime;
+
+--فقط تاریخ
+SELECT CAST(GETDATE() AS DATE) AS TodayDate;
+
+--فقط ساعت
+SELECT CAST(GETDATE() AS TIME) AS CurrenTime;
+
+--اضافه کردن روز به تاریخ
+SELECT DATEADD(DAY, 7, GETDATE()) AS NextWeek;
+
+--تفاوت بین دو تاریخ
+SELECT DATEDIFF(DAY, '2025-08-01' , '2025-08-17') AS DaysDiff;
