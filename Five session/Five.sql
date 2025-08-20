@@ -142,3 +142,8 @@ SELECT CAST(123 AS NVARCHAR(10)) AS TextValue;
 
 --تبدیل با قابلیت دقیق تر
 SELECT CONVERT(VARCHAR(10), GETDATE(), 23) AS DataString; --yyyy-mm-dd
+
+--بررسی شرط با IIF
+SELECT FirstName,
+       IIF(LEN(FirstName)>4,'Long Name' , 'Short Name') AS NameType
+FROM Users;
