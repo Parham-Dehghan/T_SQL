@@ -100,3 +100,21 @@ SELECT (CASE WHEN 10 < 20 THEN 10 ELSE 20 END) AS MinValue;
 
 -- مقدار مطلق
 SELECT ABS(-50) AS AbsoluteValue;
+
+--ترکیب رشته ها
+SELECT CONCAT (FirstName , ' ' ,LastName) AS Fullname FROM Users;
+
+-- طول رشته 
+SELECT LEN(FirstName) AS NameLength FROM Users;
+
+-- تبدیل حروف به بزرگ
+SELECT UPPER(FirstName) AS UpperName FROM Users;
+
+--تبدیل حروف به کوچک
+SELECT LOWER(LastName) AS LowerName FROM Users;
+
+-- استخراج قسمتی از رشته
+SELECT SUBSTRING(ProductName, 1, 5) AS ShortName FROM Products;
+
+-- جایگزینی متن
+SELECT REPLACE(ProductName, 'Laptop' , 'Notebook') AS NewProductName FROM Products;
