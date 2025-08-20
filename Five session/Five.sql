@@ -147,3 +147,13 @@ SELECT CONVERT(VARCHAR(10), GETDATE(), 23) AS DataString; --yyyy-mm-dd
 SELECT FirstName,
        IIF(LEN(FirstName)>4,'Long Name' , 'Short Name') AS NameType
 FROM Users;
+
+
+--تولید عدد تصادفی بین 0و1 
+SELECT RAND() AS RandomValue;
+
+--مربع عدد
+SELECT POWER(5 , 2) AS SquareValue;
+
+--ریشه دوم عدد
+SELECT SQRT(25) AS SquareRootValue
