@@ -86,3 +86,11 @@ VALUES
 (8, 4, 2),
 (9, 5, 1),
 (10, 6, 1);
+
+
+--نمایش سفازش ها همراه با نام کاربر و نام محصول 
+SELECT o.OrderID , u.FirstName, u.LastName , p.ProductName , o.Quantity
+FROM Orders o
+INNER JOIN Users u ON o.UserID =
+u.UserID
+INNER JOIN Products p ON o.ProductID = p.ProductsID
