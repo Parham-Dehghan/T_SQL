@@ -105,3 +105,9 @@ LEFT JOIN Orders o ON u.UserID = o.UserID;
 SELECT u.FirstName, u.LastName, o.OrderID
 FROM Users u
 RIGHT JOIN Orders o ON u.UserID = o.UserID;
+
+
+--نمایش همه کاربران و همه سفارشات حتی اگر ارتباطی نداشته باشند
+SELECT u.FirstName, u.LastName, o.OrderID
+FROM Users u
+FULL OUTER JOIN Orders o ON u.UserID = o.UserID;
