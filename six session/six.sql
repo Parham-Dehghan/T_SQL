@@ -154,3 +154,7 @@ INNER JOIN Products p ON o.ProductID = p.ProductsID;
 
 --استفاده از View
 SELECT * FROM vw_OrderDetails;
+
+--بروزرسانی View
+SELECT * FROM vw_OrderDetails
+WHERE Quantity > 1;
