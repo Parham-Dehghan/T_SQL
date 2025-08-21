@@ -118,3 +118,11 @@ SELECT FirstName, LastName,
 WHERE Orders.UserID = Users.UserID)
 AS OrdersCount
 FROM Users;
+
+--نمایش کاربرانی که حداقل یک سفارش با Quantity >=4  دارند
+SELECT * FROM Users
+WHERE UserID IN(
+      SELECT UserID
+	  FROM Orders
+	  WHERE Quantity >= 4
+);
