@@ -134,3 +134,19 @@ WHERE EXISTS (
 	  FROM Orders o
 	  WHERE o.UserID = u.UserID
 );
+
+
+--نمایش کاربرانی که حداقل یک سفارش دارند
+SELECT * FROM Users u
+WHERE EXISTS (
+      SELECT 1
+	  FROM Orders o
+	  WHERE o.UserID = u.UserID
+);
+
+-- برای نمایش سفارش ها با جزییات view ایجاد یک محصول کاربر و محصول
+CREATE VIEW vw_OrderDetails AS 
+SELECT o.OrderID, u.FirstName, u.LastName, p.ProductName, o.Quantity
+FROM Orders o
+INNER JOIN Users u ON o.UserID = u.UserID
+INNER JOIN Products p ON o.ProductID = p.ProductsID;
