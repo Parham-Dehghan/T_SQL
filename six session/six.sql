@@ -111,3 +111,10 @@ RIGHT JOIN Orders o ON u.UserID = o.UserID;
 SELECT u.FirstName, u.LastName, o.OrderID
 FROM Users u
 FULL OUTER JOIN Orders o ON u.UserID = o.UserID;
+
+--نمایش نام کاربر و تعداد سفارش های او
+SELECT FirstName, LastName,
+       (SELECT COUNT(*) FROM Orders
+WHERE Orders.UserID = Users.UserID)
+AS OrdersCount
+FROM Users;
