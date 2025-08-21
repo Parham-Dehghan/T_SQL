@@ -162,3 +162,9 @@ WHERE Quantity > 1;
 
 --حذف جدول
 DROP VIEW vw_OrderDetails
+
+
+--پایان
+use master
+go
+DROP DATABASE IF EXISTS test6
