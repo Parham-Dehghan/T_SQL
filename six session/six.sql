@@ -158,3 +158,7 @@ SELECT * FROM vw_OrderDetails;
 --بروزرسانی View
 SELECT * FROM vw_OrderDetails
 WHERE Quantity > 1;
+
+
+--حذف جدول
+DROP VIEW vw_OrderDetails
