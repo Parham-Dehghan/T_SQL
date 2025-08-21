@@ -99,3 +99,9 @@ INNER JOIN Products p ON o.ProductID = p.ProductsID
 SELECT u.FirstName, u.LastName, o.OrderID
 FROM Users u
 LEFT JOIN Orders o ON u.UserID = o.UserID;
+
+
+--نمایش همه سفارشات حتی اگر کاربر موجود نباشد
+SELECT u.FirstName, u.LastName, o.OrderID
+FROM Users u
+RIGHT JOIN Orders o ON u.UserID = o.UserID;
