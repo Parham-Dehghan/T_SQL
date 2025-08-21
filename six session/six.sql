@@ -126,3 +126,11 @@ WHERE UserID IN(
 	  FROM Orders
 	  WHERE Quantity >= 4
 );
+
+--نمایش کاربرانی که حداقل یک سفارش دارند
+SELECT * FROM Users u
+WHERE EXISTS (
+      SELECT 1
+	  FROM Orders o
+	  WHERE o.UserID = u.UserID
+);
