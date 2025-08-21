@@ -150,3 +150,7 @@ SELECT o.OrderID, u.FirstName, u.LastName, p.ProductName, o.Quantity
 FROM Orders o
 INNER JOIN Users u ON o.UserID = u.UserID
 INNER JOIN Products p ON o.ProductID = p.ProductsID;
+
+
+--استفاده از View
+SELECT * FROM vw_OrderDetails;
