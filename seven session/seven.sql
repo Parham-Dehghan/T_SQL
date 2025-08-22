@@ -93,3 +93,12 @@ AS
 BEGIN 
     SELECT * FROM Users;
 END;
+
+
+
+
+--اجرای stored procedure
+EXEC sp_GetAllUsers
+
+--drop
+DROP PROCEDURE sp_GetAllUsers;
