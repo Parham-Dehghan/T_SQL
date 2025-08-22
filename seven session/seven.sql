@@ -154,3 +154,18 @@ SELECT ProductName,
 dbo.fn_DiscountPrice(Price, 10) AS
 DiscountedPrice
 FROM Products;
+
+--ایجاد تابع بازگشتی جدول برای سفارشات بالای حد مشخص 
+CREATE FUNCTION
+fn_OrdersAboveQuantity(@MinQuantity INT)
+RETURNS TABLE
+AS
+RETURN
+(
+   SELECT * FROM Orders
+   WHERE Quantity > @MinQuantity
+);
+
+--استفاده از تابع
+SELECT * FROM
+dbo.fn_OrdersAboveQuantity(1);
