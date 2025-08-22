@@ -113,3 +113,6 @@ BEGIN
     FROM Users
     WHERE UserID = @UserID;
 END;
+
+--اجرای sp با مقدار پارامتر
+EXEC sp_GetUserByID  @UserID = 3;
