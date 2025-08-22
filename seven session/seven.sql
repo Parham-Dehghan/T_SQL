@@ -149,4 +149,8 @@ BEGIN
 @DiscountPercent / 100);
 END;
 
-.
+--استفاده از تابع 
+SELECT ProductName,
+dbo.fn_DiscountPrice(Price, 10) AS
+DiscountedPrice
+FROM Products;
