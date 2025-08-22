@@ -131,3 +131,6 @@ BEGIN
 @PercentageIncrease/100)
     WHERE ProductsID = @ProductID;
 END;
+
+--اجرا SP
+EXEC sp_UpdateProductPrize @ProductID = 1, @PercentageIncrease = 10;
