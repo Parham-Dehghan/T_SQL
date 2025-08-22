@@ -116,3 +116,18 @@ END;
 
 --اجرای sp با مقدار پارامتر
 EXEC sp_GetUserByID  @UserID = 3;
+
+
+
+--افزایش قیمت محصول 
+CREATE PROCEDURE
+sp_UpdateProductPrize 
+    @ProductID INT,
+	@PercentageIncrease DECIMAL(5,2)
+AS 
+BEGIN
+    UPDATE Products
+	SET Price = Price *(1 +
+@PercentageIncrease/100)
+    WHERE ProductsID = @ProductID;
+END;
