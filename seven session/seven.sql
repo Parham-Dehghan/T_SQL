@@ -169,3 +169,7 @@ RETURN
 --استفاده از تابع
 SELECT * FROM
 dbo.fn_OrdersAboveQuantity(1);
+
+use master
+go
+DROP DATABASE IF EXISTS test7
