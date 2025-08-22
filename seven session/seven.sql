@@ -134,3 +134,18 @@ END;
 
 --اجرا SP
 EXEC sp_UpdateProductPrize @ProductID = 1, @PercentageIncrease = 10;
+
+
+--ایجاد تابع برای محاسبه قیمت با تخفیف
+CREATE FUNCTION fn_DiscountPrice
+( 
+    @Price DECIMAL(10,2),
+	@DiscountPercent DECIMAL(5,2)
+)
+RETURNS DECIMAL(10,2)
+AS
+BEGIN 
+    RETURN @Price * (1 -
+@DiscountPercent / 100);
+END;
+
