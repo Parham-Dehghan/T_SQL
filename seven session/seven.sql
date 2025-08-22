@@ -102,3 +102,14 @@ EXEC sp_GetAllUsers
 
 --drop
 DROP PROCEDURE sp_GetAllUsers;
+
+
+--ایجاد ی stored procedure با پارامتر
+CREATE PROCEDURE sp_GetUserByID 
+    @UserID INT
+AS
+BEGIN
+    SELECT * 
+    FROM Users
+    WHERE UserID = @UserID;
+END;
