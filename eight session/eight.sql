@@ -115,3 +115,7 @@ ADD CONSTRAINT UQ_Email UNIQUE
 --قیمت محصولات باید بزرگتر از صفر باشد
 ALTER TABLE Products
 ADD CONSTRAINT CHK_Price CHECK (Price> 0);
+
+--تعداد سفارش ها باید مثبت باشد
+ALTER TABLE Orders
+ADD CONSTRAINT CHK_Quantity CHECK (Quantity > 0);
