@@ -137,3 +137,20 @@ BEGIN
 	INNER JOIN inserted i ON
 o.OrderID = i.OrderID;
 END;
+
+
+--ثبت تغییرات قیمت محصول
+CREATE TRIGGER trg_UpdateProductPrice ON Products
+AFTER UPDATE
+AS
+BEGIN
+    IF UPDATE(Price)
+	BEGIN
+	    INSERT INTO
+ProductsPriceLog(ProductsID,OldPrice, NewPrice, ChangeDate)
+    SELECT d.ProductsID, d.Price, i.Price, GETDATE()
+	            FROM deleted d
+				INNER JOIN inserted i ON
+d.ProductsID = i.ProductsID;
+   END
+END
