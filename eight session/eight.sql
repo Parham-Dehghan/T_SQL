@@ -167,3 +167,12 @@ BEGIN
 deleted;
 END;
 
+
+--جلوگیری از حذف مستقیم کاربران
+CREATE TRIGGER trg_PreventUserDelete
+ON Users
+INSTEAD OF DELETE
+AS
+BEGIN
+    PRINT 'حذف کاربر مستقیم مجاز نیست';
+END;
