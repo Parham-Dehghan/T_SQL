@@ -119,3 +119,8 @@ ADD CONSTRAINT CHK_Price CHECK (Price> 0);
 --تعداد سفارش ها باید مثبت باشد
 ALTER TABLE Orders
 ADD CONSTRAINT CHK_Quantity CHECK (Quantity > 0);
+
+--اجباری کردن مقدار برای ستون 
+ALTER TABLE Users
+ALTER COLUMN FirstName NVARCHAR(50)
+NOT NULL;
