@@ -85,3 +85,11 @@ VALUES
 (8, 4, 2),
 (9, 5, 1),
 (10, 6, 1);
+
+
+--ایجاد جدول با Primary Key
+CREATE TABLE Departments (
+   DepartmentID INT PRIMARY KEY,
+   DepartmentName NVARCHAR(50) NOT
+NULL
+);
