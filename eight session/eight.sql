@@ -154,3 +154,16 @@ ProductsPriceLog(ProductsID,OldPrice, NewPrice, ChangeDate)
 d.ProductsID = i.ProductsID;
    END
 END
+
+
+--ثبت لاگ هنگام حذف سفارش
+CREATE TRIGGER trg_DeleteOrder
+ON Orders
+AFTER DELETE
+AS
+BEGIN
+    INSERT INTO OrdersLog(OrderID,DeletedDate)
+	SELECT OrderID, GETDATE() FROM
+deleted;
+END;
+
