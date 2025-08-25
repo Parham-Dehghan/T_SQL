@@ -105,3 +105,9 @@ CREATE TABLE Employees (
 	REFERENCES
 Departments(DepartmentID)
 );
+
+
+--ایمیل منحصر به فرد برای کاربران
+ALTER TABLE Users
+ADD CONSTRAINT UQ_Email UNIQUE
+(Email);
