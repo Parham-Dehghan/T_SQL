@@ -111,3 +111,7 @@ Departments(DepartmentID)
 ALTER TABLE Users
 ADD CONSTRAINT UQ_Email UNIQUE
 (Email);
+
+--قیمت محصولات باید بزرگتر از صفر باشد
+ALTER TABLE Products
+ADD CONSTRAINT CHK_Price CHECK (Price> 0);
