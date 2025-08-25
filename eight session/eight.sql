@@ -124,3 +124,16 @@ ADD CONSTRAINT CHK_Quantity CHECK (Quantity > 0);
 ALTER TABLE Users
 ALTER COLUMN FirstName NVARCHAR(50)
 NOT NULL;
+
+--ایجاد Trigger برای ثبت تاریخ ایجاد سفارش
+CREATE TRIGGER trg_InsertOrder
+ON Orders
+AFTER INSERT
+AS
+BEGIN
+    UPDATE Orders
+	SET OrderData = GETDATE()
+	FROM Orders o
+	INNER JOIN inserted i ON
+o.OrderID = i.OrderID;
+END;
