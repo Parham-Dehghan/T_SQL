@@ -93,3 +93,15 @@ CREATE TABLE Departments (
    DepartmentName NVARCHAR(50) NOT
 NULL
 );
+
+
+--ایجاد جدول Employeesبا رابطه با Departements
+CREATE TABLE Employees (
+    EmployeesID INT PRIMARY KEY,
+	FristName NVARCHAR(50),
+	LastName NVARCHAR(50),
+	DepartmentID INT,
+	CONSTRAINT FK_Dept FOREIGN KEY (DepartmentID)
+	REFERENCES
+Departments(DepartmentID)
+);
