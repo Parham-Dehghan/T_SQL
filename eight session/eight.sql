@@ -176,3 +176,8 @@ AS
 BEGIN
     PRINT 'حذف کاربر مستقیم مجاز نیست';
 END;
+
+
+use master
+go
+DROP DATABASE IF EXISTS test8
