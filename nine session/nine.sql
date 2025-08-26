@@ -89,3 +89,7 @@ VALUES
 
 --Indexایجاد روی ستون LastNameجدول Users
 CREATE INDEX IDX_Users_LastName ON Users(LastName);
+
+
+--روی دو ستون Index ایجاد
+CREATE INDEX IDX_Orders_User_Product ON Orders(UserID, ProductID);
