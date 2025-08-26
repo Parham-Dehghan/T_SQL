@@ -93,3 +93,7 @@ CREATE INDEX IDX_Users_LastName ON Users(LastName);
 
 --روی دو ستون Index ایجاد
 CREATE INDEX IDX_Orders_User_Product ON Orders(UserID, ProductID);
+
+
+--اطمینان از یکتا بودنEmail
+CREATE UNIQUE INDEX IDX_Users_Email ON Users(Email);
