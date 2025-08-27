@@ -100,3 +100,6 @@ CREATE UNIQUE INDEX IDX_Users_Email ON Users(Email);
 
 --حذف index
 DROP INDEX IDX_Users_LastName ON Users;
+
+--مشاهده Index جدول های Users
+EXEC sp_helpindex 'Users';
