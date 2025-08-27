@@ -126,3 +126,10 @@ SELECT TOP 10 * FROM Products
 WHERE Price > 1000
 ORDER BY Price DESC;
 
+--Subquery به جای استفاده از JOIN
+SELECT u.FirstName, COUNT(o.OrderID)
+AS OrderCount
+FROM Users u
+LEFT JOIN Orders o ON u.UserID = o.UserID
+GROUP BY u.FirstName;
+

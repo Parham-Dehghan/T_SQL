@@ -86,7 +86,7 @@ VALUES
 (8, 4, 2),
 (9, 5, 1),
 (10, 6, 1);
-'
+
 --ایجاد یک stored procedure ساده برای نمایش همه کاربران
 CREATE PROCEDURE sp_GetAllUsers 
 AS
