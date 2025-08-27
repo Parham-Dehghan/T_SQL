@@ -85,3 +85,15 @@ VALUES
 (8, 4, 2),
 (9, 5, 1),
 (10, 6, 1);
+
+
+--ایجاد CTE برای نمایش کاربران با تعداد سفارش
+WITH UserOrders AS(
+     SELECT UserID, COUNT(OrderID) AS
+OrdersCount
+     FROM Orders
+	 GROUP BY UserID
+)
+SELECT u.FirstName, u.LastName, uo.OrdersCount
+FROM Users u
+INNER JOIN UserOrders uo ON u.UserID = uo.UserID;
