@@ -125,3 +125,4 @@ WHERE o.Quantity > 5;
 SELECT TOP 10 * FROM Products
 WHERE Price > 1000
 ORDER BY Price DESC;
+
