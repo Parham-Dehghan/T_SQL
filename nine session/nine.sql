@@ -111,3 +111,11 @@ SELECT * FROM Orders WHERE Quantity>10;
 GO
 SET SHOWPLAN_ALL OFF;
 GO
+
+
+--INNER JOIN با Index مناسب
+SELECT o.OrderID , u.FirstName, p.ProductName
+FROM Orders o
+INNER JOIN Users u ON o.UserID = u.UserID
+INNER JOIN Products p ON o.ProductID = p.ProductsID
+WHERE o.Quantity > 5;
