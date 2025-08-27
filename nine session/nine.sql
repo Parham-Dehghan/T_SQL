@@ -133,3 +133,6 @@ FROM Users u
 LEFT JOIN Orders o ON u.UserID = o.UserID
 GROUP BY u.FirstName;
 
+use master
+go
+DROP DATABASE IF EXISTS test9
