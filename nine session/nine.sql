@@ -119,3 +119,9 @@ FROM Orders o
 INNER JOIN Users u ON o.UserID = u.UserID
 INNER JOIN Products p ON o.ProductID = p.ProductsID
 WHERE o.Quantity > 5;
+
+
+--محدود کردن تعداد ردیف ها
+SELECT TOP 10 * FROM Products
+WHERE Price > 1000
+ORDER BY Price DESC;
