@@ -97,3 +97,6 @@ CREATE INDEX IDX_Orders_User_Product ON Orders(UserID, ProductID);
 
 --اطمینان از یکتا بودنEmail
 CREATE UNIQUE INDEX IDX_Users_Email ON Users(Email);
+
+--حذف index
+DROP INDEX IDX_Users_LastName ON Users;
