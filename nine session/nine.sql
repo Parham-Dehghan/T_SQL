@@ -103,3 +103,11 @@ DROP INDEX IDX_Users_LastName ON Users;
 
 --مشاهده Index جدول های Users
 EXEC sp_helpindex 'Users';
+
+--برای بررسی بهینه بودن Execution Plan نمایش کویری
+SET SHOWPLAN_ALL ON;
+GO
+SELECT * FROM Orders WHERE Quantity>10;
+GO
+SET SHOWPLAN_ALL OFF;
+GO
