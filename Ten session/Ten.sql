@@ -97,3 +97,18 @@ OrdersCount
 SELECT u.FirstName, u.LastName, uo.OrdersCount
 FROM Users u
 INNER JOIN UserOrders uo ON u.UserID = uo.UserID;
+
+--متوالی CTE چند
+WITH UserOrders AS (
+     SELECT UserID , COUNT(OrderID) AS OrdersCount
+	 FROM Orders
+	 GROUP BY UserID
+),
+HighOrders AS (
+   SELECT UserID
+   FROM UserOrders
+   WHERE OrdersCount > 5
+)
+SELECT u.FirstName, u.LastName
+FROM Users u
+INNER JOIN HighOrders h ON u.UserID = h.UserID;
