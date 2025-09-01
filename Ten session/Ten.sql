@@ -112,3 +112,33 @@ HighOrders AS (
 SELECT u.FirstName, u.LastName
 FROM Users u
 INNER JOIN HighOrders h ON u.UserID = h.UserID;
+
+
+--جدول نمونه : Departments با ParentID
+CREATE TABLE Departments (
+     DepartmentID INT PRIMARY KEY,
+	 DepartmentName NVARCHAR(50),
+	 ParentID INT NULL
+);
+
+--داده نمونه
+INSERT INTO Departments VALUES
+(1, 'm' , NULL),
+(2, 'H' , 1),
+(3, 'I' , 1),
+(4, 'H' , 2),
+(5, 'I' , 2);
+
+--بازگشتی برای نمایش سلسله مراتب CTE 
+WITH DeptHierarchy AS(
+    SELECT DepartmentID, DepartmentName , ParentID , 0 AS Level 
+	FROM Departments
+	WHERE ParentID IS NULL 
+	UNION ALL
+	SELECT d.DepartmentID , d.DepartmentName , d.ParentID , dh.Level + 1
+	FROM Departments d
+	INNER JOIN DeptHierarchy dh ON
+d.ParentID = dh.DepartmentID
+)
+SELECT * FROM DeptHierarchy
+ORDER BY Level, DepartmentID;
