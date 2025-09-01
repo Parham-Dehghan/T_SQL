@@ -34,6 +34,24 @@ CREATE TABLE Orders(
 	FOREIGN KEY (ProductID) REFERENCES Products(ProductsID)
 );
 
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY IDENTITY(1,1),
+    FirstName NVARCHAR(50) NOT NULL,
+    LastName NVARCHAR(50) NOT NULL,
+    ManagerID INT NULL,
+    FOREIGN KEY (ManagerID) REFERENCES Employees(EmployeeID)
+);
+
+INSERT INTO Employees (FirstName, LastName, ManagerID)
+VALUES
+('Ali', 'Rezayi', NULL),       -- مدیر کل
+('Sara', 'Ahmadi', 1),         -- کارمند با مدیر Ali
+('Reza', 'Karimi', 1),
+('Neda', 'Mohammadi', 2),      -- کارمند با مدیر Sara
+('Hossein', 'Shahri', 3);      -- کارمند با مدیر Reza
+
+
+
 -- افزودن کاربران
 INSERT INTO Users (FirstName, LastName, Email)
 VALUES
@@ -142,3 +160,11 @@ d.ParentID = dh.DepartmentID
 )
 SELECT * FROM DeptHierarchy
 ORDER BY Level, DepartmentID;
+
+-- نمایش کارمندان و مدیران آنها
+SELECT 
+    e.EmployeeID,
+    e.FirstName AS EmployeeName, 
+    m.FirstName AS ManagerName
+FROM Employees e
+LEFT JOIN Employees m ON e.ManagerID = m.EmployeeID;
