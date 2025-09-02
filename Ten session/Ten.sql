@@ -205,3 +205,14 @@ CROSS APPLY (
       WHERE Products.CategoryID = c.CategoryID
       ORDER BY Price DESC
 ) p;
+
+
+--مشابه مطابقت هم هست cross apply ولی شامل ردیف های بدون 
+SELECT c.CategroryName , p.ProductName, p.PriceC
+FROM Categories c
+OUTER APPLY (
+      SELECT TOP 1 ProductName, Price
+	  FROM Products
+	  WHERE Products.CategoryID = c.CategoryID
+	  ORDER BY Price DESC
+) p;
