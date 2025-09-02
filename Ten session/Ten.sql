@@ -216,3 +216,8 @@ OUTER APPLY (
 	  WHERE Products.CategoryID = c.CategoryID
 	  ORDER BY Price DESC
 ) p;
+
+
+use master
+go
+DROP DATABASE IF EXISTS test10
