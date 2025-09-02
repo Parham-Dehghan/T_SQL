@@ -34,6 +34,19 @@ CREATE TABLE Orders(
 	FOREIGN KEY (ProductID) REFERENCES Products(ProductsID)
 );
 
+-- جدول دسته‌بندی‌ها
+CREATE TABLE Categories (
+    CategoryID INT PRIMARY KEY IDENTITY(1,1),
+    CategoryName NVARCHAR(100) NOT NULL
+);
+
+INSERT INTO Categories (CategoryName)
+VALUES
+(N'لوازم الکترونیکی'),
+(N'لوازم جانبی'),
+(N'پوشاک'),
+(N'کتاب');
+
 CREATE TABLE Employees (
     EmployeeID INT PRIMARY KEY IDENTITY(1,1),
     FirstName NVARCHAR(50) NOT NULL,
@@ -168,3 +181,27 @@ SELECT
     m.FirstName AS ManagerName
 FROM Employees e
 LEFT JOIN Employees m ON e.ManagerID = m.EmployeeID;
+
+
+CREATE TABLE Categories (
+    CategoryID INT PRIMARY KEY IDENTITY(1,1),
+    CategoryName NVARCHAR(100) NOT NULL
+);
+
+
+ALTER TABLE Products
+ADD CategoryID INT;
+
+
+-- نمایش گران‌ترین محصول در هر دسته‌بندی
+SELECT 
+    c.CategoryName, 
+    p.ProductName, 
+    p.Price
+FROM Categories c
+CROSS APPLY (
+      SELECT TOP 1 ProductName, Price
+      FROM Products
+      WHERE Products.CategoryID = c.CategoryID
+      ORDER BY Price DESC
+) p;
