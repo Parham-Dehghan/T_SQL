@@ -77,3 +77,8 @@ SELECT
      request_session_id,
 resource_type, resource_description, request_mode
 FROM sys.dm_tran_locks;
+
+
+use master
+go
+DROP DATABASE IF EXISTS test11
