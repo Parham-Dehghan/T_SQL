@@ -70,3 +70,10 @@ BEGIN TRANSACTION;
 UPDATE Accounts
 SET Balance = Balance - 100
 WHERE AccountID = 1;
+
+
+--نمایش lock های فعال
+SELECT 
+     request_session_id,
+resource_type, resource_description, request_mode
+FROM sys.dm_tran_locks;
