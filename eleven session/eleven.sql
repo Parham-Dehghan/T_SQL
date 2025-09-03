@@ -58,6 +58,15 @@ UPDATE Accounts
 SET Balance = Balance + 100
 WHERE AccountID = 3;
 
+COMMIT;
+
+
+
 ROLLBACK TRANSACTION SavePoint1;
 
-COMMIT;
+
+BEGIN TRANSACTION;
+
+UPDATE Accounts
+SET Balance = Balance - 100
+WHERE AccountID = 1;
