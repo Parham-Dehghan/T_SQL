@@ -40,3 +40,7 @@ SET Balance = Balance - 5000 --خطا
 WHERE AccountID = 1;
 
 ROLLBACK;
+
+--بررسی تراکنش ها فعال
+SELECT @@TRANCOUNT AS 
+ActiveTransactions;
