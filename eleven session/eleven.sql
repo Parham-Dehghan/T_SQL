@@ -31,3 +31,12 @@ SET Balance = Balance + 200
 WHERE AccountID = 2;
 
 COMMIT;--ذخیره تغییرات
+
+BEGIN TRANSACTION;
+
+UPDATE Accounts
+SET Balance = Balance - 5000 --خطا
+
+WHERE AccountID = 1;
+
+ROLLBACK;
