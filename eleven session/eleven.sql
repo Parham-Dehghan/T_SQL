@@ -44,3 +44,20 @@ ROLLBACK;
 --بررسی تراکنش ها فعال
 SELECT @@TRANCOUNT AS 
 ActiveTransactions;
+
+
+BEGIN TRANSACTION
+
+UPDATE Accounts
+SET Balance = Balance - 100
+WHERE AccountID = 1;
+
+SAVE TRANSACTION Savepoint1; --ذخیره نقطه وسط
+
+UPDATE Accounts
+SET Balance = Balance + 100
+WHERE AccountID = 3;
+
+ROLLBACK TRANSACTION SavePoint1;
+
+COMMIT;
