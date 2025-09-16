@@ -56,3 +56,22 @@ END TRY
 BEGIN CATCH 
     PRINT'خطا رخ داد!';
 END CATCH;
+
+
+--نمایش جزییات خطا
+BEGIN TRY
+     DELETE FROM Accounts WHERE 
+AccountID = 100; -- وجود ندارد
+END TRY 
+BEGIN CATCH 
+    SELECT 
+	   ERROR_NUMBER() AS ErrorNumber,
+	   ERROR_SEVERITY() AS Severity,
+	   ERROR_STATE() AS State,
+	   ERROR_PROCEDURE() AS ProcedureName,
+	   ERROR_LINE() AS ErrorLine,
+	   ERROR_MESSAGE() AS ErrorMessage;
+END CATCH;
+--نکته : توابع ()*_ERROR اطلاعات کامل خطا رو برمی گردونند 
+
+
