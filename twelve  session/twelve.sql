@@ -20,3 +20,9 @@ INSERT INTO Accounts (AccountID , AccountHolder, Balance)VALUES
 (1,'Ali', 1000.00),
 (2,'Sara',2000.00),
 (3,'Raza', 1500.00)
+
+
+--اجرای Dynamic SQL با EXEC
+DECLARE @sql NVARCHAR (MAX);
+SET @sql = N'SELECT * FROM Accounts WHERE Balance > 1000';
+EXEC(@sql);
