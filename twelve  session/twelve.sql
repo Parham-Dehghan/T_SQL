@@ -45,3 +45,14 @@ DECLARE @sql NVARCHAR (MAX);
 SET @sql = N'SELECT * FROM' + QUOTENAME(@tableName);
 
 EXEC(@sql);
+
+-- TRY...CATCH با Error Handling
+BEGIN TRY
+    --کویری ای که ممکنه خطا بده
+	UPDATE Accounts
+	SET Balance = Balance - 5000
+	WHERE AccountID = 1;
+END TRY
+BEGIN CATCH 
+    PRINT'خطا رخ داد!';
+END CATCH;
