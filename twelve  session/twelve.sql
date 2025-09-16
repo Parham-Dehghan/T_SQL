@@ -75,3 +75,29 @@ END CATCH;
 --نکته : توابع ()*_ERROR اطلاعات کامل خطا رو برمی گردونند 
 
 
+-- Safe money transfer
+BEGIN TRY
+    BEGIN TRANSACTION;
+
+    DECLARE @Amount DECIMAL(18,2) = 700;
+
+    -- Deduct from Account 1
+    UPDATE Accounts
+    SET Balance = Balance - @Amount
+    WHERE AccountID = 1;
+
+    -- Add to Account 3
+    UPDATE Accounts
+    SET Balance = Balance + @Amount
+    WHERE AccountID = 3;
+
+    COMMIT;
+    PRINT 'Transfer completed successfully.';
+END TRY
+BEGIN CATCH
+    ROLLBACK;
+    PRINT 'Transfer failed.';
+    SELECT 
+        ERROR_NUMBER() AS ErrorNumber,
+        ERROR_MESSAGE() AS ErrorMessage;
+END CATCH;
