@@ -35,3 +35,13 @@ SET @minBalance = 1200;
 SET @sql = N'SELECT * FROM Accounts WHERE Balance > @bal';
 
 EXEC sp_executesql @sql , N'@bal DECIMAL (18 , 2)' , @bal = @minBalance;
+
+
+--برای انتخاب جدول Dynamic SQl برای انتخاب جدول
+DECLARE @tableName NVARCHAR(50) = 'Accounts';
+
+DECLARE @sql NVARCHAR (MAX);
+
+SET @sql = N'SELECT * FROM' + QUOTENAME(@tableName);
+
+EXEC(@sql);
