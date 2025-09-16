@@ -101,3 +101,7 @@ BEGIN CATCH
         ERROR_NUMBER() AS ErrorNumber,
         ERROR_MESSAGE() AS ErrorMessage;
 END CATCH;
+
+use master
+go
+DROP DATABASE IF EXISTS test12
