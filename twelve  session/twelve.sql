@@ -26,3 +26,12 @@ INSERT INTO Accounts (AccountID , AccountHolder, Balance)VALUES
 DECLARE @sql NVARCHAR (MAX);
 SET @sql = N'SELECT * FROM Accounts WHERE Balance > 1000';
 EXEC(@sql);
+
+--اجرا امن تر با sp_executesql
+DECLARE @sql NVARCHAR(MAX);
+DECLARE @minBalance DECIMAL(18,2);
+
+SET @minBalance = 1200;
+SET @sql = N'SELECT * FROM Accounts WHERE Balance > @bal';
+
+EXEC sp_executesql @sql , N'@bal DECIMAL (18 , 2)' , @bal = @minBalance;
