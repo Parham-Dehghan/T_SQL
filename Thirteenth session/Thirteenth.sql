@@ -30,3 +30,20 @@ PRIMARY KEY,
  SELECT FirstName, LastName, Salary
  FROM Employees
  WHERE Salary >(SELECT AVG(Salary) FROM Employees);
+
+
+ WITH SalaryCTE AS(
+     SELECT DepartmentID, AVG(Salary)
+AS AvgSalary
+   FROM Employees
+   GROUP BY DepartmentID
+)
+SELECT 
+    e.FirstName,
+	e.LastName,
+	e.salary,
+	s.AvgSalary
+FROM Employees e
+JOIN SalaryCTE s
+ON e.DepartmentID = s.DepartmentID
+WHERE e.Salary > s.AvgSalary;
