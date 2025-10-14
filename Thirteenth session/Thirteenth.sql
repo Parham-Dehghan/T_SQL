@@ -100,3 +100,14 @@ SELECT
 FROM Orders
 GROUP BY CustomerID
 HAVING SUM(Amount) > 300000;
+
+--آخرین سفارش هر مشتری 
+SELECT *
+FROM(
+    SELECT *,
+	        ROW_NUMBER() OVER
+(PARTITION BY CustomerID ORDER BY
+OrderDate DESC) AS rn
+    FROM Orders
+) AS t
+WHERE rn = 1;
