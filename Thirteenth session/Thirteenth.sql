@@ -91,3 +91,12 @@ INSERT INTO Orders (CustomerID, OrderDate, Amount) VALUES
 (103, '2025-02-10', 90000),
 (104, '2025-03-05', 450000),
 (102, '2025-03-20', 150000);
+
+
+--تمرین 1 : مشتریانی که مجموع خریدشان بیش از 300,000 است
+SELECT
+     CustomerID,
+	 SUM(Amount) AS TotalAmount
+FROM Orders
+GROUP BY CustomerID
+HAVING SUM(Amount) > 300000;
