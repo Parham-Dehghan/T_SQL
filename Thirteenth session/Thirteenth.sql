@@ -47,3 +47,13 @@ FROM Employees e
 JOIN SalaryCTE s
 ON e.DepartmentID = s.DepartmentID
 WHERE e.Salary > s.AvgSalary;
+
+
+--رتبه بندی
+SELECT 
+    FirstName, LastName,
+DepartmentID, Salary,
+   RANK() OVER(PARTITION BY 
+   DepartmentID ORDER BY Salary DESC) AS
+   SalaryRank
+   FROM Employees
