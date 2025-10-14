@@ -73,3 +73,21 @@ END;
 --اجرا تابع بالا
 EXEC GetHighSalaryEmployees
 @MinSalary = 15000;
+
+
+-- ساخت جدول Orders
+CREATE TABLE Orders (
+    OrderID INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerID INT,
+    OrderDate DATE,
+    Amount INT
+);
+
+-- درج داده‌های نمونه
+INSERT INTO Orders (CustomerID, OrderDate, Amount) VALUES
+(101, '2025-01-12', 250000),
+(102, '2025-01-15', 120000),
+(101, '2025-02-01', 310000),
+(103, '2025-02-10', 90000),
+(104, '2025-03-05', 450000),
+(102, '2025-03-20', 150000);
