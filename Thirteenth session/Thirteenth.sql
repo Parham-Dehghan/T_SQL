@@ -111,3 +111,15 @@ OrderDate DESC) AS rn
     FROM Orders
 ) AS t
 WHERE rn = 1;
+
+
+--مجموع فروش در هر ماه با CTE
+WITH MonthlySales AS (
+    SELECT 
+        YEAR(OrderDate) AS Year,
+        MONTH(OrderDate) AS Month,
+        SUM(Amount) AS TotalSales
+    FROM Orders
+    GROUP BY YEAR(OrderDate), MONTH(OrderDate)
+)
+SELECT * FROM MonthlySales;
