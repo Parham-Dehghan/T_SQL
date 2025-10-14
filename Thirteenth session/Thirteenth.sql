@@ -123,3 +123,16 @@ WITH MonthlySales AS (
     GROUP BY YEAR(OrderDate), MONTH(OrderDate)
 )
 SELECT * FROM MonthlySales;
+
+
+--ساخت Stored Procedureبرای بازه زمانی 
+CREATE PROCEDURE GetOrdersByDateRange
+    @StartDate DATE,
+    @EndDate DATE
+AS
+BEGIN
+    SELECT * 
+    FROM Orders
+    WHERE OrderDate BETWEEN @StartDate AND @EndDate
+    ORDER BY OrderDate;
+END;
