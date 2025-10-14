@@ -136,3 +136,6 @@ BEGIN
     WHERE OrderDate BETWEEN @StartDate AND @EndDate
     ORDER BY OrderDate;
 END;
+
+--خط کد برای اجرا تابع بالا
+EXEC GetOrdersByDateRange @StartDate = '2025-01-01', @EndDate = '2025-02-28';
