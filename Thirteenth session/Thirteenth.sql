@@ -139,3 +139,7 @@ END;
 
 --خط کد برای اجرا تابع بالا
 EXEC GetOrdersByDateRange @StartDate = '2025-01-01', @EndDate = '2025-02-28';
+
+use master
+go
+DROP DATABASE IF EXISTS Thirteenth
