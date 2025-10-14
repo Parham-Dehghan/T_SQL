@@ -57,3 +57,15 @@ DepartmentID, Salary,
    DepartmentID ORDER BY Salary DESC) AS
    SalaryRank
    FROM Employees
+
+--ذخیره کویری های پر تکرار
+CREATE PROCEDURE
+GetHighSalaryEmployees
+    @MinSalary INT
+AS
+BEGIN
+    SELECT FirstName, LastName,
+Salary
+     FROM Employees
+	 WHERE Salary > @MinSalary;
+END;
