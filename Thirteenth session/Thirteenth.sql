@@ -69,3 +69,7 @@ Salary
      FROM Employees
 	 WHERE Salary > @MinSalary;
 END;
+
+--اجرا تابع بالا
+EXEC GetHighSalaryEmployees
+@MinSalary = 15000;
