@@ -26,9 +26,11 @@ ORDER BY s.name, t.name;
 SET NOCOUNT, XACT_ABORT ON;
 GO
 
+/*DROP FUNCTION IF EXISTS dbo.fn_LineTotal;
+DROP FUNCTION IF EXISTS dbo.fn_SalesDetails;
+GO*/
+
 -- 1. Scalar Function - محاسبه قیمت با تخفیف + مالیات
-IF OBJECT_ID('dbo.fn_LineTotal') IS NOT NULL DROP FUNCTION dbo.fn_LineTotal;
-GO
 CREATE FUNCTION dbo.fn_LineTotal(@UnitPrice DECIMAL(19,4), @Discount DECIMAL(4,3), @Qty INT)
 RETURNS DECIMAL(19,4)
 WITH SCHEMABINDING
@@ -37,20 +39,20 @@ AS BEGIN
 END
 GO
 
--- 2. Inline TVF - فروش کامل با تمام جزئیات
-IF OBJECT_ID('dbo.fn_SalesDetails') IS NOT NULL DROP FUNCTION dbo.fn_SalesDetails;
-GO
+-- 2. Inline TVF
 CREATE FUNCTION dbo.fn_SalesDetails(@Start DATE, @End DATE)
 RETURNS TABLE AS RETURN (
     SELECT 
         h.SalesOrderID, h.OrderDate, h.CustomerID, h.SalesPersonID,
-        c.StoreName, c.CustomerType, t.Name AS Territory,
+        ISNULL(s.Name, 'Individual Customer') AS StoreName,
+        t.Name AS Territory,
         p.ProductID, p.Name AS ProductName, p.ProductNumber,
         cat.Name AS Category, sub.Name AS Subcategory,
         d.OrderQty, d.UnitPrice, d.UnitPriceDiscount,
         dbo.fn_LineTotal(d.UnitPrice, d.UnitPriceDiscount, d.OrderQty) AS LineTotal
     FROM Sales.SalesOrderHeader h
     JOIN Sales.Customer c ON h.CustomerID = c.CustomerID
+    LEFT JOIN Sales.Store s ON c.StoreID = s.BusinessEntityID
     JOIN Sales.SalesTerritory t ON h.TerritoryID = t.TerritoryID
     JOIN Sales.SalesOrderDetail d ON h.SalesOrderID = d.SalesOrderID
     JOIN Production.Product p ON d.ProductID = p.ProductID
@@ -61,104 +63,146 @@ RETURNS TABLE AS RETURN (
 GO
 
 -- 3. Main Master Procedure - 10 بخش + همه JOINها
-IF OBJECT_ID('dbo.usp_AW_MasterDemo') IS NOT NULL DROP PROC dbo.usp_AW_MasterDemo;
-GO
-CREATE PROCEDURE dbo.usp_AW_MasterDemo
+CREATE PROCEDURE dbo.usp_AW_MasterDemo_Sorted
     @StartDate DATE = '2013-01-01',
     @EndDate   DATE = '2014-12-31'
 AS
 BEGIN
     DECLARE @Summary TABLE (Metric NVARCHAR(60), Value SQL_VARIANT);
 
-    IF OBJECT_ID('tempdb..#Report') IS NOT NULL DROP TABLE #Report;
+    DROP TABLE IF EXISTS #Report;
     CREATE TABLE #Report (
-        Sec CHAR(3), Title NVARCHAR(100), Key1 NVARCHAR(100), Key2 NVARCHAR(100),
-        Qty INT, Sales DECIMAL(19,4), AvgVal DECIMAL(19,4), Cnt INT, JoinType VARCHAR(20)
+        Section   CHAR(3)      NOT NULL,
+        Title     NVARCHAR(100) NOT NULL,
+        Key1      NVARCHAR(150) NULL,
+        Key2      NVARCHAR(150) NULL,
+        Qty       INT           NULL,
+        Sales     DECIMAL(19,4) NULL,
+        AvgVal    DECIMAL(19,4) NULL,
+        Cnt       INT           NULL,
+        JoinType  VARCHAR(20)   NOT NULL,
+        SortOrder INT           NOT NULL  -- برای ترتیب نهایی
     );
 
     BEGIN TRY
         IF @StartDate > @EndDate THROW 50001, 'Invalid date range', 1;
 
-        -- 1. فروش بر اساس دسته‌بندی محصول
-        INSERT #Report SELECT '01','By Category',Category,Subcategory,SUM(OrderQty),SUM(LineTotal),AVG(LineTotal),COUNT(*),'INNER'
-               FROM dbo.fn_SalesDetails(@StartDate,@EndDate) GROUP BY Category,Subcategory;
+        -- 01. فروش بر اساس دسته‌بندی و زیرگروه (بزرگ → کوچک)
+        INSERT #Report 
+        SELECT TOP 50 
+               '01','By Category/Subcategory', ISNULL(Category,'Unknown'), Subcategory,
+               SUM(OrderQty), SUM(LineTotal), AVG(LineTotal), COUNT(*), 'INNER', 1
+        FROM dbo.fn_SalesDetails(@StartDate,@EndDate)
+        GROUP BY Category, Subcategory
+        ORDER BY SUM(LineTotal) DESC;
 
-        -- 2. ROLLUP - جمع جزء + کل
-        INSERT #Report SELECT '02','ROLLUP',ISNULL(Category,'TOTAL'),NULL,SUM(OrderQty),SUM(LineTotal),NULL,COUNT(*),'ROLLUP'
-               FROM dbo.fn_SalesDetails(@StartDate,@EndDate) GROUP BY ROLLUP(Category);
+        -- 02. ROLLUP (بزرگ → کوچک)
+        INSERT #Report 
+        SELECT '02','ROLLUP Summary', ISNULL(Category,'TOTAL'), NULL,
+               SUM(OrderQty), SUM(LineTotal), NULL, COUNT(*), 'ROLLUP', 2
+        FROM dbo.fn_SalesDetails(@StartDate,@EndDate)
+        GROUP BY ROLLUP(Category)
+        ORDER BY SUM(LineTotal) DESC;
 
-        -- 3. CUBE - تمام ترکیب‌ها
-        INSERT #Report SELECT '03','CUBE',ISNULL(Territory,'ALL')+'|'+ISNULL(Category,'ALL'),NULL,
-               SUM(OrderQty),SUM(LineTotal),NULL,COUNT(*),'CUBE'
-               FROM dbo.fn_SalesDetails(@StartDate,@EndDate) GROUP BY CUBE(Territory,Category);
+        -- 03. CUBE (بزرگ → کوچک)
+        INSERT #Report 
+        SELECT '03','CUBE Analysis', ISNULL(Territory,'ALL')+' | '+ISNULL(Category,'ALL'), NULL,
+               SUM(OrderQty), SUM(LineTotal), NULL, COUNT(*), 'CUBE', 3
+        FROM dbo.fn_SalesDetails(@StartDate,@EndDate)
+        GROUP BY CUBE(Territory, Category)
+        ORDER BY SUM(LineTotal) DESC;
 
-        -- 4. LEFT JOIN - کارمندانی که فروش ندارند
-        INSERT #Report SELECT '04','No Sales',FirstName+' '+LastName,NULL,0,0,0,1,'LEFT'
-               FROM HumanResources.Employee e
-               LEFT JOIN Sales.SalesPerson sp ON e.BusinessEntityID = sp.BusinessEntityID
-               WHERE sp.BusinessEntityID IS NULL;
+        -- 04. کارمندانی که فروشنده نیستند
+        INSERT #Report 
+        SELECT TOP 15 '04','Employees Without Sales Role', p.FirstName+' '+p.LastName, NULL,
+               0, 0, 0, 1, 'LEFT JOIN', 4
+        FROM HumanResources.Employee e
+        JOIN Person.Person p ON e.BusinessEntityID = p.BusinessEntityID
+        LEFT JOIN Sales.SalesPerson sp ON e.BusinessEntityID = sp.BusinessEntityID
+        WHERE sp.BusinessEntityID IS NULL
+        ORDER BY p.LastName, p.FirstName;
 
-        -- 5. RIGHT JOIN - محصولاتی که هیچ‌وقت فروخته نشدند
-        INSERT #Report SELECT '05','Never Sold',p.Name,NULL,0,0,p.ListPrice,1,'RIGHT'
-               FROM Production.Product p
-               LEFT JOIN Sales.SalesOrderDetail d ON p.ProductID = d.ProductID
-               WHERE d.ProductID IS NULL;
+        -- 05. محصولاتی که هیچوقت فروخته نشدند
+        INSERT #Report 
+        SELECT TOP 15 '05','Never Sold Products', p.Name, p.ProductNumber,
+               0, 0, p.ListPrice, 1, 'RIGHT JOIN', 5
+        FROM Production.Product p
+        LEFT JOIN Sales.SalesOrderDetail d ON p.ProductID = d.ProductID
+        WHERE d.ProductID IS NULL
+        ORDER BY p.ListPrice DESC;
 
-        -- 6. FULL OUTER - تامین‌کننده و محصول (حتی بدون ارتباط)
-        INSERT #Report SELECT '06','Vendor-Product',ISNULL(v.Name,'No Vendor'),ISNULL(p.Name,'No Product'),
-               0,0,NULL,COUNT(*),'FULL'
-               FROM Purchasing.Vendor v
-               FULL OUTER JOIN Purchasing.ProductVendor pv ON v.BusinessEntityID = pv.BusinessEntityID
-               FULL OUTER JOIN Production.Product p ON pv.ProductID = p.ProductID
-               GROUP BY v.Name, p.Name;
+        -- 06. FULL OUTER - تامین‌کننده و محصول
+        INSERT #Report 
+        SELECT TOP 30 '06','Vendor × Product Matrix', ISNULL(v.Name,'No Vendor'), ISNULL(p.Name,'No Product'),
+               0, 0, NULL, COUNT(*), 'FULL OUTER', 6
+        FROM Purchasing.Vendor v
+        FULL OUTER JOIN Purchasing.ProductVendor pv ON v.BusinessEntityID = pv.BusinessEntityID
+        FULL OUTER JOIN Production.Product p ON pv.ProductID = p.ProductID
+        GROUP BY v.Name, p.Name
+        ORDER BY COUNT(*) DESC;
 
-        -- 7. CROSS JOIN - پتانسیل فروش (فروشنده × منطقه)
-        INSERT #Report SELECT TOP 20 '07','Sales Potential',
-               e.FirstName+' '+e.LastName,t.Name,NULL,NULL,NULL,1,'CROSS'
-               FROM (SELECT TOP 5 BusinessEntityID,FirstName,LastName FROM Person.Person WHERE BusinessEntityID IN (SELECT BusinessEntityID FROM Sales.SalesPerson)) e
-               CROSS JOIN (SELECT TOP 5 Name FROM Sales.SalesTerritory) t;
+        -- 07. CROSS JOIN - پتانسیل فروش
+        INSERT #Report 
+        SELECT TOP 30 '07','Sales Potential Matrix', p.FirstName+' '+p.LastName, t.Name,
+               NULL, NULL, NULL, 1, 'CROSS JOIN', 7
+        FROM Sales.SalesPerson sp
+        JOIN Person.Person p ON sp.BusinessEntityID = p.BusinessEntityID
+        CROSS JOIN (SELECT TOP 10 Name FROM Sales.SalesTerritory ORDER BY Name) t;
 
-        -- 8. GROUP BY با HAVING - فقط مناطق بالای 1 میلیون فروش
-        INSERT #Report SELECT '08','High Sales Territories',Territory,NULL,
-               SUM(OrderQty),SUM(LineTotal),NULL,COUNT(*),'HAVING'
-               FROM dbo.fn_SalesDetails(@StartDate,@EndDate)
-               GROUP BY Territory HAVING SUM(LineTotal) > 1000000;
+        -- 08. مناطق با فروش بالای 2 میلیون
+        INSERT #Report 
+        SELECT '08','High-Revenue Territories (>2M)', Territory, NULL,
+               SUM(OrderQty), SUM(LineTotal), NULL, COUNT(*), 'HAVING', 8
+        FROM dbo.fn_SalesDetails(@StartDate,@EndDate)
+        GROUP BY Territory
+        HAVING SUM(LineTotal) > 2000000
+        ORDER BY SUM(LineTotal) DESC;
 
-        -- 9. GROUPING SETS - چند گروه‌بندی همزمان
-        INSERT #Report SELECT '09','GROUPING SETS',ISNULL(Category,'ALL'),ISNULL(Territory,'ALL'),
-               SUM(OrderQty),SUM(LineTotal),NULL,COUNT(*),'GROUPING SETS'
-               FROM dbo.fn_SalesDetails(@StartDate,@EndDate)
-               GROUP BY GROUPING SETS ( (Category), (Territory), () );
+        -- 09. GROUPING SETS
+        INSERT #Report 
+        SELECT '09','GROUPING SETS Summary', ISNULL(Category,'ALL CATEGORIES'), ISNULL(Territory,'ALL TERRITORIES'),
+               SUM(OrderQty), SUM(LineTotal), NULL, COUNT(*), 'GROUPING SETS', 9
+        FROM dbo.fn_SalesDetails(@StartDate,@EndDate)
+        GROUP BY GROUPING SETS ((Category), (Territory), ())
+        ORDER BY SUM(LineTotal) DESC;
 
         -- 10. بهترین فروشنده هر منطقه
-        INSERT #Report SELECT TOP 10 '10','Top SalesPerson',t.Name, p.FirstName+' '+p.LastName,
-               NULL,SUM(d.LineTotal),NULL,COUNT(*),'WINDOW/RANK'
-               FROM Sales.SalesOrderHeader h
-               JOIN Sales.SalesOrderDetail d ON h.SalesOrderID = d.SalesOrderID
-               JOIN Sales.SalesTerritory t ON h.TerritoryID = t.TerritoryID
-               JOIN Person.Person p ON h.SalesPersonID = p.BusinessEntityID
-               WHERE h.OrderDate >= @StartDate AND h.OrderDate < DATEADD(DAY,1,@EndDate)
-               GROUP BY t.Name, p.FirstName, p.LastName;
+        INSERT #Report 
+        SELECT TOP 15 '10','Top Sales Persons by Territory', t.Name, per.FirstName+' '+per.LastName,
+               NULL, SUM(d.LineTotal), NULL, COUNT(*), 'RANK', 10
+        FROM Sales.SalesOrderHeader h
+        JOIN Sales.SalesOrderDetail d ON h.SalesOrderID = d.SalesOrderID
+        JOIN Sales.SalesTerritory t ON h.TerritoryID = t.TerritoryID
+        JOIN Person.Person per ON h.SalesPersonID = per.BusinessEntityID
+        WHERE h.OrderDate >= @StartDate AND h.OrderDate < DATEADD(DAY,1,@EndDate)
+        GROUP BY t.Name, per.FirstName, per.LastName
+        ORDER BY SUM(d.LineTotal) DESC;
 
         -- خلاصه نهایی
-        INSERT @Summary VALUES
-            ('Total Revenue', (SELECT SUM(LineTotal) FROM dbo.fn_SalesDetails(@StartDate,@EndDate))),
-            ('Total Orders', (SELECT COUNT(DISTINCT SalesOrderID) FROM Sales.SalesOrderHeader WHERE OrderDate >= @StartDate AND OrderDate < DATEADD(DAY,1,@EndDate))),
-            ('Active Products', (SELECT COUNT(*) FROM Production.Product WHERE SellEndDate IS NULL)),
-            ('Avg Order Value', (SELECT AVG(TotalDue) FROM Sales.SalesOrderHeader WHERE OrderDate >= @StartDate AND OrderDate < DATEADD(DAY,1,@EndDate)));
+        INSERT @Summary 
+        SELECT 'Total Revenue (2013-2014)', SUM(LineTotal) FROM dbo.fn_SalesDetails(@StartDate,@EndDate)
+        UNION ALL SELECT 'Total Orders', COUNT(*) FROM Sales.SalesOrderHeader WHERE OrderDate >= @StartDate AND OrderDate < DATEADD(DAY,1,@EndDate)
+        UNION ALL SELECT 'Active Products', COUNT(*) FROM Production.Product WHERE SellEndDate IS NULL;
 
-        SELECT * FROM #Report ORDER BY Sec, Sales DESC;
+        -- خروجی نهایی: دقیقاً مرتب و خوانا
+        SELECT 
+            Section, Title, Key1, Key2, Qty, Sales, AvgVal, Cnt, JoinType
+        FROM #Report
+        ORDER BY SortOrder, Sales DESC, Qty DESC, Cnt DESC;
+
+        PRINT 'تمام ۱۰ بخش با موفقیت اجرا و مرتب شدند!';
+
         SELECT Metric, Value FROM @Summary;
 
     END TRY
     BEGIN CATCH
         IF OBJECT_ID('tempdb..#Report') IS NOT NULL
-            INSERT #Report VALUES ('ERR','ERROR OCCURRED',ERROR_MESSAGE(),NULL,NULL,NULL,NULL,1,'TRY/CATCH');
+            INSERT #Report VALUES ('ERR','ERROR',ERROR_MESSAGE(),NULL,NULL,NULL,NULL,1,'CATCH',999);
         THROW;
     END CATCH
 END
 GO
 
--- اجرا
-EXEC dbo.usp_AW_MasterDemo '2013-01-01', '2014-12-31';
+
+EXEC dbo.usp_AW_MasterDemo_Sorted '2013-01-01', '2014-12-31';
 
