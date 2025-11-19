@@ -1,3 +1,13 @@
+/*
+AdventureWorks Full Version – 10 Advanced GROUP BY Techniques
+1.ROLLUP / CUBE / GROUPING SETS  check
+2.All 5 JOIN Types (including FULL OUTER & CROSS) check
+3.Inline TVF + Scalar + SCHEMABINDING check
+4.Temp Table + Table Variable + Index check
+5.Full TRY/CATCH + THROW check
+6.Production-Ready Code (Banking Standard) check
+*/
+
 use master
 go 
 
