@@ -1,9 +1,9 @@
-USE AdventureWorks;
+USE my_database1;
 GO
 SET NOCOUNT, XACT_ABORT ON;
 GO
 
-CREATE OR ALTER PROCEDURE dbo.usp_Sales_ByCategory
+CREATE OR ALTER PROCEDURE SP_usp_Sales_ByCategory
     @StartDate DATE,
     @EndDate   DATE
 AS
@@ -44,7 +44,7 @@ BEGIN
     GROUP BY ISNULL(cat.Name, N'نامشخص'), ISNULL(sub.Name, N'نامشخص')
     OPTION (RECOMPILE);
 
-    -- خروجی نهایی (فقط یک Result Set)
+    -- خروجی
     SELECT 
         Category,
         Subcategory,
@@ -60,4 +60,4 @@ END
 GO
 
 -- اجرا
-EXEC dbo.usp_Sales_ByCategory '2013-01-01', '2014-12-31';
+EXEC SP_usp_Sales_ByCategory '2013-01-01', '2014-12-31';
